@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<GridPane prefHeight="157.0" prefWidth="360.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1">
+  <columnConstraints>
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="183.0" minWidth="10.0" prefWidth="183.0" />
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="218.0" minWidth="10.0" prefWidth="124.0" />
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="129.0" minWidth="10.0" prefWidth="66.0" />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+  </rowConstraints>
+   <children>
+      <RadioButton fx:id="dateTimeRadio" mnemonicParsing="false" onAction="#onShowDate" prefHeight="17.0" prefWidth="161.0" text="Show the Date &amp; Time">
+         <padding>
+            <Insets left="10.0" />
+         </padding>
+         <toggleGroup>
+            <ToggleGroup fx:id="radioButtons" />
+         </toggleGroup>
+      </RadioButton>
+      <RadioButton fx:id="showStringRadio" mnemonicParsing="false" text="Show this string:" toggleGroup="$radioButtons" GridPane.rowIndex="1">
+         <padding>
+            <Insets left="10.0" />
+         </padding>
+      </RadioButton>
+      <CheckBox fx:id="italicCheckbox" mnemonicParsing="false" text="Italics" GridPane.columnIndex="1">
+         <padding>
+            <Insets left="10.0" />
+         </padding>
+      </CheckBox>
+      <CheckBox fx:id="boldCheckbox" mnemonicParsing="false" text="Bold" GridPane.columnIndex="1" GridPane.rowIndex="1">
+         <padding>
+            <Insets left="10.0" />
+         </padding>
+      </CheckBox>
+      <TextField fx:id="inputTextfield" prefHeight="25.0" prefWidth="180.0" promptText="Enter Text. . ." GridPane.columnSpan="3" GridPane.rowIndex="2" />
+      <Label prefHeight="17.0" prefWidth="138.0" text="Text Height (In points):" GridPane.rowIndex="3">
+         <padding>
+            <Insets left="10.0" />
+         </padding>
+      </Label>
+      <Label prefHeight="17.0" prefWidth="42.0" text="(8-40)" GridPane.columnIndex="2" GridPane.rowIndex="3">
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <padding>
+            <Insets left="5.0" />
+         </padding>
+      </Label>
+      <TextField prefHeight="25.0" prefWidth="90.0" promptText="Enter points. . ." GridPane.columnIndex="1" GridPane.rowIndex="3" />
+   </children>
+</GridPane>
