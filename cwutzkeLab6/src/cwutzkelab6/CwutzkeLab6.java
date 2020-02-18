@@ -1,11 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package cwutzkeLab6;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Optional;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -27,6 +24,9 @@ import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -37,13 +37,15 @@ import javafx.stage.Stage;
 public class CwutzkeLab6 extends Application {
     
     Label mStatus;
+    Text mPrompt;
+    OptionsData mOptionsData;
     
     @Override
     public void start(Stage primaryStage) {
-        Text prompt = new Text("Do File -> Options to change this");
+        mPrompt = new Text("Do File -> Options to change this");
         
         BorderPane root = new BorderPane();
-        root.setCenter(prompt);
+        root.setCenter(mPrompt);
                 
         // add the menus
         root.setTop(buildMenuBar());
@@ -60,7 +62,7 @@ public class CwutzkeLab6 extends Application {
         primaryStage.show();
     }
     
-    public static MenuBar buildMenuBar()
+    public MenuBar buildMenuBar()
     {
         // build a menu bar
         MenuBar menuBar = new MenuBar() ;
@@ -99,28 +101,48 @@ public class CwutzkeLab6 extends Application {
         alert.showAndWait();
     }
     
-    private static void onOptions()
+    private void onOptions()
     {
         try
         {
-            OptionsLayoutController options = new OptionsLayoutController();
+            mOptionsData = new OptionsData();
+            OptionsLayoutController options = new OptionsLayoutController(mOptionsData);
             Optional<ButtonType> opt = options.showAndWait();
-            if (opt.isPresent())
+            if (opt.isPresent() && opt.get().getButtonData() == ButtonData.OK_DONE)
             {
-                ButtonData result = opt.get().getButtonData();
-                if (result.equals(ButtonData.OK_DONE))
-                { 
-                    AlertType alert = AlertType.WARNING;
-                    Alert exceptionAlert = new Alert(alert, "Hit Ok");
-                    exceptionAlert.showAndWait();
+                Font font;
+                if (mOptionsData.bold && !mOptionsData.italics)
+                {
+                    font = Font.font("Monospaced", FontWeight.BOLD, mOptionsData.size);
+                }
+                else if (mOptionsData.italics && !mOptionsData.bold)
+                {
+                    font = Font.font("Monospaced", FontPosture.ITALIC, mOptionsData.size);
+                }
+                else if (mOptionsData.bold && mOptionsData.italics)
+                {
+                    font = Font.font("Monospaced", FontWeight.BOLD, FontPosture.ITALIC, mOptionsData.size);
+                }
+                else
+                {
+                    font = Font.font("Monospaced", mOptionsData.size);
+                }
+                
+                mPrompt.setFont(font);
+                if (mOptionsData.showString == true)
+                    mPrompt.setText(mOptionsData.userString);
+                else
+                {
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss z");
+                    Date date = new Date();
+                    String showDate = dateFormat.format(date);
+                    mPrompt.setText(showDate);
                 }
             }
         }
         catch (IOException e)
         {
-            AlertType alert = AlertType.WARNING;
-            Alert exceptionAlert = new Alert(alert, e.getMessage());
-            exceptionAlert.showAndWait();
+            setStatus("IOException occured" + e.getMessage());
         }
     }
     
@@ -132,8 +154,8 @@ public class CwutzkeLab6 extends Application {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) 
+    {
         launch(args);
     }
-    
 }

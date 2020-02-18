@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0" xmlns:jfx="http://javafx.com" href="cwutzkeLab6.jnlp">
+  <information>
+    <title>cwutzkeLab6</title>
+    <vendor>cooper.wutzke</vendor>
+    <description>null</description>
+    <offline-allowed/>
+  </information>
+  <resources>
+    <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
+    <jar href="cwutzkeLab6.jar" size="9064" download="eager" />
+  </resources>
+  <jfx:javafx-desc  width="800" height="600" main-class="cwutzkeLab6.CwutzkeLab6"  name="cwutzkeLab6" />
+  <update check="always"/>
+</jnlp>
