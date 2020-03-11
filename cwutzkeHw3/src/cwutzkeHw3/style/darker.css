@@ -1,0 +1,33 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Mar 10, 2020, 6:05:37 PM
+    Author     : Cooper Wutzke
+*/
+
+.root {
+-fx-base: rgb(160,160,160);
+-fx-control-inner-background: rgb(220,220,220);
+}
+
+.menu-bar {
+-fx-background-color:
+linear-gradient(to bottom,
+derive(-fx-base,-40%),
+-fx-base,
+derive(-fx-base,-40%)
+);
+}
+
+.tool-bar:horizontal {
+-fx-background-color:
+linear-gradient(to bottom,
+derive(-fx-base,-40%),
+-fx-base,
+derive(-fx-base,-40%)
+);
+}
+
