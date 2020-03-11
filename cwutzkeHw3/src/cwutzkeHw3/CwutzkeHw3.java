@@ -36,7 +36,7 @@ import javafx.stage.Stage;
 public class CwutzkeHw3 extends Application {
     
     Label mStatus;
-    Scene mScene;
+    Scene mMainScene;
     
     ToggleGroup mViewToggler;
     
@@ -63,10 +63,10 @@ public class CwutzkeHw3 extends Application {
         ToolBar toolBar = new ToolBar(mStatus) ;
         root.setBottom(toolBar) ;
         
-        mScene = new Scene(root);
+        mMainScene = new Scene(root);
         
         primaryStage.setTitle("System Clipboard");
-        primaryStage.setScene(mScene);
+        primaryStage.setScene(mMainScene);
         primaryStage.show();
     }
     
@@ -123,11 +123,11 @@ public class CwutzkeHw3 extends Application {
         if (style.equals("darker"))
         {
             String targ = getClass().getResource("style/darker.css").toExternalForm();
-            mScene.getStylesheets().add(targ);
+            mMainScene.getStylesheets().add(targ);
         }
         else if (style.equals("modena"))
         {
-            mScene.getStylesheets().clear();
+            mMainScene.getStylesheets().clear();
         }
     }
     
