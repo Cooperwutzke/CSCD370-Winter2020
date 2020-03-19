@@ -5,6 +5,7 @@
  */
 package cwutzkeAshman;
 
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -28,17 +29,21 @@ import javafx.stage.Stage;
  *
  * @author Cooper Wutzke
  */
-public class CwutzkeAshman extends Application {
+public class CwutzkeAshman extends Application 
+{
     
     Label mStatus;
     Maze mMaze;
+
     
     @Override
     public void start(Stage primaryStage) {
-        mMaze = new Maze(new Canvas(520,520), new Canvas(520, 520), 0);
+        mMaze = new Maze();
         
         BorderPane root = new BorderPane();
-        StackPane pane = new StackPane(mMaze.mBoardCanvas, mMaze.mGameCanvas);
+        StackPane pane = new StackPane(mMaze.mMazeCanvas, mMaze.mGameCanvas);
+        
+        root.setCenter(pane);
         
         // add the menus
         root.setTop(buildMenuBar());
@@ -52,22 +57,22 @@ public class CwutzkeAshman extends Application {
         
         scene.setOnKeyPressed(event ->
         {
-            Direction direction = Direction.stop;
+            MoveDirection moveDir = MoveDirection.STOP;
             switch (event.getCode()){
                 case UP:
-                    direction = Direction.down;
+                    moveDir = MoveDirection.DOWN;
                     break;
                 case DOWN:
-                    direction = Direction.up;
+                    moveDir = MoveDirection.UP;
                     break;
                 case LEFT:
-                    direction = Direction.left;
+                    moveDir = MoveDirection.LEFT;
                     break;
                 case RIGHT:
-                    direction = Direction.right;
+                    moveDir = MoveDirection.RIGHT;
                     break;
             }
-            mMaze.mElements.get(0).setDirection(direction);
+            mMaze.mPlayer.setDirection(moveDir);
         });
         
         primaryStage.setTitle("Ashman");
@@ -84,7 +89,7 @@ public class CwutzkeAshman extends Application {
         alert.showAndWait();
     }
     
-    public static MenuBar buildMenuBar()
+    public MenuBar buildMenuBar()
     {
         // build a menu bar
         MenuBar menuBar = new MenuBar();
@@ -102,30 +107,36 @@ public class CwutzkeAshman extends Application {
         MenuItem newMenuItem = new MenuItem("_New");
         newMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.N, KeyCombination.CONTROL_DOWN));
         newMenuItem.setOnAction(actionEvent -> {
-            mMaze.reset();
+            mMaze.onRestart();
         });
         MenuItem pauseMenuItem = new MenuItem("_Pause");
         pauseMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.P, KeyCombination.CONTROL_DOWN));
         pauseMenuItem.setDisable(true);
-        MenuItem goMenuItem = new MenuItem("_Go");
-        goMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.G, KeyCombination.CONTROL_DOWN));
+        
+        MenuItem resumeMenuItem = new MenuItem("_Resume");
+        resumeMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.G, KeyCombination.CONTROL_DOWN));
+        
         pauseMenuItem.setOnAction(actionEvent -> {
-            mMaze.pause();
+            mMaze.onPause();
             pauseMenuItem.setDisable(true);
-            goMenuItem.setDisable(false);
+            resumeMenuItem.setDisable(false);
         });
-        goMenuItem.setOnAction(actionEvent -> {
-            mMaze.resume();
-            goMenuItem.setDisable(true);
+        resumeMenuItem.setOnAction(actionEvent -> {
+            mMaze.onResume();
+            resumeMenuItem.setDisable(true);
             pauseMenuItem.setDisable(false);
         });
+        
+        gameMenu.getItems().addAll(newMenuItem, pauseMenuItem, resumeMenuItem);
         
         // Help menu
         Menu helpMenu = new Menu("_Help");
         MenuItem aboutMenuItem = new MenuItem("_About");
         aboutMenuItem.setOnAction(actionEvent -> onAbout());
         helpMenu.getItems().add(aboutMenuItem);
-        menuBar.getMenus().addAll(fileMenu, helpMenu);
+        
+        // Add menus to bar
+        menuBar.getMenus().addAll(fileMenu, gameMenu, helpMenu);
         return menuBar;
     }
     
@@ -134,13 +145,6 @@ public class CwutzkeAshman extends Application {
         mStatus.setText(newStatus);
     }
     
-    private boolean doSomeWork() 
-    {
-        mWorkStep++;
-        mGameCanvas.getGraphicsContext2D().clearRect(0, 0, 520, 520);
-        mElements.forEach(element -> element.draw(mGameCanvas));
-        return ghostCollision() || score == cakeCount;
-    }
 
     /**
      * @param args the command line arguments
